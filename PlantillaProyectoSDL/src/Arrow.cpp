@@ -4,8 +4,11 @@
 #include "texture.h"
 using namespace std;
 
-Arrow::Arrow(Rectangle posAndDim, Vector2D<> speed, Texture* texture, Game* game): posAndDim(posAndDim), speed(speed), texture(texture), game(game), shoot(false)
+Arrow::Arrow(Rectangle posAndDim, Vector2D<> speed, Texture* texture, Game* game): texture(texture)
 {
+    this->posAndDim = posAndDim;
+    this->speed = speed;
+    this->game = game;
 }
 Arrow::~Arrow() {}
 void Arrow::render() const
@@ -17,9 +20,7 @@ bool Arrow::update(float delta)
 {
     bool ret = false;
     // Si ha sido disparada
-    if (shoot) 
-    {
-        // Movimiento
+       // Movimiento
         posAndDim.move(speed *delta);
 
         // Colisiones
@@ -28,10 +29,6 @@ bool Arrow::update(float delta)
 
         // Si se ha salido de la pantalla devuelve true para que el game la destruya
         if (posAndDim.getTopLeftCorner().getX() > game->WINDOW_WIDTH + 10) ret = true;
-    }
     return ret;
 }
-void Arrow::dispara() 
-{
-    this->shoot = true;
-}
+

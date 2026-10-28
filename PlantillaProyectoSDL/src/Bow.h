@@ -2,13 +2,13 @@
 #include "rectangle.h"
 #include "vector2D.h"
 #include "texture.h"
+#include "SceneObject.h"
 class Game;
 
-class Bow
+class Bow : public SceneObject
 {
 private:
-	Rectangle posAndDim = Rectangle();
-	Vector2D<> moveDir = Vector2D();
+	Vector2D<> moveDir;
 	int numArrows;
 	Texture* texture;
 	// Indica si el arco esta cargado
@@ -17,8 +17,8 @@ public:
 	Bow(Rectangle, int, Texture*);
 	~Bow();
 	void handleEvent(const SDL_Event& event);
-	void render() const;
-	bool update(float delta);
+	void render() const override;
+	void update() override;
 
 	// Cambia el estado del arco si se ha podido disparar
 	bool Shoot();

@@ -2,11 +2,10 @@
 #include "rectangle.h"
 #include "vector2D.h"
 #include "texture.h"
-class Balloon
+#include "MobileObject.h"
+class Balloon : public MobileObject
 {
 private:
-	Rectangle posAndDim;
-	Vector2D<> speed;
 	Texture* texture;
 	int color;
 	// Indica si hay que ejecutar la animacion de explosion
@@ -22,9 +21,7 @@ public:
 	~Balloon();
 	bool hit(const Rectangle&);
 
-	void render() const;
-	// Devuelve true cuando tiene que ser destruido
-	bool update(float delta);
+	void render() const override;
 	// Devuelve true si el globo se ha salido de la pantalla
 	bool fueraPantalla() const;
 	// Coloca el globo en la posicion en el eje Y

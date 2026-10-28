@@ -185,7 +185,6 @@ void Game::disparaFlecha()
 	if (hSpeedM > 3.0f) hSpeedM = 3.0f;
 
 	Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(0.25f * hSpeedM, 0.0f), textures[ARROW], this);
-	newArrow->dispara();
 	arrows.push_back(newArrow);
 }
 void Game::RenderDerrota()const 
@@ -267,40 +266,15 @@ void Game::UpdateBallons() {
 
 	for (auto it = balloons.begin(); it != balloons.end(); )
 	{
-		bool destroy = (*it)->update(delta);
-		bool fueraPantalla = (*it)->fueraPantalla();
-		// Si fue explotado
-		if (destroy)
-		{
-			//TODO hay que pensar como hacer que el globo no se destuya hasta que se termine la animacion
-			//Realizamos la animacion de ser destruido
-			(*it)->render();
-			aumentaPuntuacion();
-			delete* it;				 // Liberamos la memoria del globo
-			it = balloons.erase(it); // Lo eliminamos del vector y actualizamos el iterador
-
-		}
-		// Si se salió de la pantalla
-		else if (fueraPantalla)
-		{
-			(*it)->colocaGlobo(700); // Lo volvemos a colocar debajo de la pantalla
-			++it;
-		}
-		else ++it;
+		(*it)->update();
+		++it;
 	}
 }
 void Game::UpdateArrows() {
 	for (auto it = arrows.begin(); it != arrows.end(); )
 	{
-		if ((*it)->update(delta)) // Si salió de la pantalla y devuelve true
-		{
-			delete* it;            // Liberamos la memoria de la flecha
-			it = arrows.erase(it); // La eliminamos del vector y actualizamos el iterador
-		}
-		else
-		{
-			++it;
-		}
+		(*it)->update(delta); // Si salió de la pantalla y devuelve true
+		++it;
 	}
 }
 void Game::update()
@@ -309,7 +283,7 @@ void Game::update()
 	//delta -= Tiempo de ahora
 	delta = (float)SDL_GetTicks()- delta;
 	//actualizamos el arco
-	bow->update(delta);
+	bow->update();
 
 	// Actualizar y limpiar flechas que salen de la pantalla
 	UpdateArrows();

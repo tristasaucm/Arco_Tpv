@@ -6,7 +6,11 @@
 #include "texture.h"
 using namespace std;
 
-Balloon::Balloon(Rectangle posAndDim, Vector2D<> Speed, int color, Texture* texture): posAndDim(posAndDim), speed(Speed), texture(texture), color(color) {}
+Balloon::Balloon(Rectangle posAndDim, Vector2D<> speed, int color, Texture* texture):texture(texture), color(color) 
+{
+	this->posAndDim = posAndDim;
+	this->speed = speed;
+}
 Balloon::~Balloon(){}
 
 bool Balloon::hit(const Rectangle& obj) {
