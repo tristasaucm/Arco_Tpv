@@ -7,7 +7,6 @@
 class Balloon : public MobileObject
 {
 private:
-	Texture* texture;
 	int color;
 	// Indica si hay que ejecutar la animacion de explosion
 	bool animacion = false;

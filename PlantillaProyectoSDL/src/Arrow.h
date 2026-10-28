@@ -8,7 +8,6 @@ class Game;
 class Arrow : public MobileObject
 {
 private:
-	Texture* texture;
 	
 public:
 	Arrow(Rectangle, Vector2D<>, Texture*, Game*);

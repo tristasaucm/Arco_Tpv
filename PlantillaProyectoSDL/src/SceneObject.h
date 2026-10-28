@@ -7,6 +7,7 @@ private:
 	
 public:
 	Rectangle posAndDim;
+	Texture* texture;
 	virtual bool hit(const Rectangle&);
 
 };

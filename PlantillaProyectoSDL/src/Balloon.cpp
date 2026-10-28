@@ -1,8 +1,9 @@
 #include "Balloon.h"
 using namespace std;
 
-Balloon::Balloon(Rectangle posAndDim, Vector2D<> speed, int color, Texture* texture):texture(texture), color(color) 
+Balloon::Balloon(Rectangle posAndDim, Vector2D<> speed, int color, Texture* texture): color(color) 
 {
+	this->texture = texture;
 	this->posAndDim = posAndDim;
 	this->speed = speed;
 }

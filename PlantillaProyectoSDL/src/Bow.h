@@ -10,7 +10,6 @@ class Bow : public SceneObject
 private:
 	Vector2D<> moveDir;
 	int numArrows;
-	Texture* texture;
 	// Indica si el arco esta cargado
 	bool charged = false;
 public:
