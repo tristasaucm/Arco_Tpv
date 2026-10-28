@@ -3,6 +3,7 @@
 #include "vector2D.h"
 #include "texture.h"
 #include "MobileObject.h"
+
 class Balloon : public MobileObject
 {
 private:
@@ -10,8 +11,6 @@ private:
 	int color;
 	// Indica si hay que ejecutar la animacion de explosion
 	bool animacion = false;
-	// Indica si se ha salido de la pantalla
-	bool fuerapantalla = false;
 	// Momento en el que se ha puesto la textura anterior
 	float frameAnterior = 0;
 	// Frame a renderizar
@@ -22,10 +21,4 @@ public:
 	bool hit(const Rectangle&);
 
 	void render() const override;
-	// Devuelve true si el globo se ha salido de la pantalla
-	bool fueraPantalla() const;
-	// Coloca el globo en la posicion en el eje Y
-	void colocaGlobo(float);
 };
-
-

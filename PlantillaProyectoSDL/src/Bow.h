@@ -14,14 +14,12 @@ private:
 	// Indica si el arco esta cargado
 	bool charged = false;
 public:
-	Bow(Rectangle, int, Texture*);
+	Bow(Rectangle, int, Texture*, Game*);
 	~Bow();
 	void handleEvent(const SDL_Event& event);
 	void render() const override;
 	void update() override;
 
-	// Cambia el estado del arco si se ha podido disparar
-	bool Shoot();
 	// Devuelve el numero de flechas restantes
 	int getNArrows() const;
 	// Devuelve la posicion del centro del arco en el eje y

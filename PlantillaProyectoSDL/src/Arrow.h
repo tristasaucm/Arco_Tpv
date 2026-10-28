@@ -14,6 +14,4 @@ public:
 	Arrow(Rectangle, Vector2D<>, Texture*, Game*);
 	~Arrow();
 	void render() const override;
-	// Devuelve true cuando se ha salido de la pantalla
-	bool update(float delta);
 };

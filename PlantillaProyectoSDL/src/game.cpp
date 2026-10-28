@@ -91,7 +91,7 @@ void Game::leeArchivoNivel(int level)
 			balloons.push_back(bal);
 			//guardamos el tiempo de creaccion del ultimo globo
 			numGlobosGenerados++;
-			creacionGlobo = (float)SDL_GetTicks();
+			creacionGlobo = (int)SDL_GetTicks();
 		}
 
 		if (numGlobosGenerados >= 10) {
@@ -146,7 +146,7 @@ Game::Game()
 	//Establecemos el primer nivel que vamos a elegir y lo cargamos
 	level = 1;
 	leeArchivoNivel(level);
-	delta = (float)SDL_GetTicks();
+	delta = (int)SDL_GetTicks();
 	hud = new InfoBar(this, bow);
 }
 
@@ -225,15 +225,12 @@ void Game::UpdateBallons() {
 void Game::UpdateArrows() {
 	for (auto it = arrows.begin(); it != arrows.end(); )
 	{
-		(*it)->update(delta); // Si salió de la pantalla y devuelve true
+		(*it)->update();
 		++it;
 	}
 }
 void Game::update()
 {
-	
-	//delta -= Tiempo de ahora
-	delta = (float)SDL_GetTicks()- delta;
 	//actualizamos el arco
 	bow->update();
 
@@ -246,8 +243,6 @@ void Game::update()
 	// Genera globos con intervalo de tiempo
 	BalloonGeneration();
 
-	// delta = tiempo de ahora
-	delta = (float)SDL_GetTicks();
 }
 
 void
@@ -255,11 +250,18 @@ Game::run()
 {
 	while (!exit) 
 	{
+
+		// delta = Tiempo de ahora - Tiempo frame anterior
+		delta = (int)SDL_GetTicks() - delta;
 		handleEvents();
 		update();
 		render();
 		compruebaDerrota();
 		compruebaPasoNivel();
+		// Esperar = Tiempo que debe pasar - Tiempo que ha pasado
+		SDL_Delay(FRAME_PERIOD - delta);
+		// delta = tiempo de ahora
+		delta = (int)SDL_GetTicks();
 	}
 }
 
@@ -267,44 +269,35 @@ void
 Game::handleEvents()
 {
 	SDL_Event event;
-
 	// Only quit is handled directly, everything else is delegated
-
-
 	if (SDL_PollEvent(&event)) {
 		if (event.type == SDL_EVENT_QUIT || (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_ESCAPE))
 			exit = true;
+		// Si has perdiddo y pulsas la R para reiniciar el nivel
+		if (pierde && event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R)
+		{
+			// Eliminamos los globos que queden
+			for (Balloon* b : balloons)
+			{
+				delete b;
+			}
+			balloons.clear();
+			// Reiniciamos la puntuacion
+			pierde = false;
+			pasaNivel = false;
+			points = 0;
+			goal = -1;
+			level = 1;
+			// Volvemos a cargar el nivel
+			leeArchivoNivel(level);
+		}
 		else 
 		{
 			// Para Cambiar la velocidad de la flecha en funcion de cuanto tiempo esta cargada
-			if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_LEFT && !bow->isCharged()) cargaArco = (float)SDL_GetTicks();
+			if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_LEFT && !bow->isCharged()) cargaArco = (int)SDL_GetTicks();
 			
 			// Manejo de eventos del arco
 			bow->handleEvent(event);
-			
-			// Disparo de flechas
-			if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_RIGHT && bow->Shoot())
-			{
-				disparaFlecha();
-			}
-
-			// Si has perdiddo y pulsas la R para reiniciar el nivel
-			if (pierde && event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) 
-			{
-				// Eliminamos los globos que queden
-				for (Balloon* b : balloons) 
-				{
-					delete b;
-				}
-				balloons.clear();
-				// Reiniciamos la puntuacion
-				points = 0;
-				goal = -1;
-				pierde = false;
-				level = 1;
-				// Volvemos a cargar el nivel
-				leeArchivoNivel(level);
-			}
 		}
 	}
 }
@@ -315,6 +308,7 @@ bool Game::checkCollision(const Rectangle& rect)
 	for (auto it = balloons.begin(); it != balloons.end(); )
 	{
 		golpea = (*it)->hit(rect);
+		if (golpea) aumentaPuntuacion();
 		++it;
 	}
 	return golpea;
@@ -323,24 +317,6 @@ bool Game::checkCollision(const Rectangle& rect)
 void Game::aumentaPuntuacion() 
 {
 	points += balpoints;
-	if (goal > 0 && points >= goal) 
-	{
-		// Liberar todas las flechas restantes en el vector
-		for (Arrow* a : arrows) {
-			delete a;
-		}
-		arrows.clear(); 
-
-		// --- Carga siguiente nivel
-		pierde = false;
-		points = 0;
-		goal = -1;
-		level += 1;
-		leeArchivoNivel(level);
-
-		// --- Espera 3s
-		SDL_Delay(3000);
-	}
 }
 
 void Game::compruebaDerrota() 
@@ -364,7 +340,7 @@ void Game::compruebaPasoNivel()
 		leeArchivoNivel(level);
 	}
 	// Si hay una meta y la has superado indicamos que hay que pasar al siguiente nivel
-	if (goal > 0 && points > goal && !pasaNivel)
+	else if (goal > 0 && points >= goal)
 	{
 		pasaNivel = true;
 	}

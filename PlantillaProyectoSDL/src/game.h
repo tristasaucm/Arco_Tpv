@@ -5,15 +5,17 @@
 #include <SDL3/SDL.h>
 #include <array>
 #include <istream>
+#include <random>
+#include <string>
 #include "vector2D.h"
 #include "rectangle.h"
 #include "Balloon.h"
 #include "Arrow.h"
 #include "Bow.h"
 #include "InfoBar.h"
-#include <random>
-#include <string>
-
+#include "GameObject.h"
+#include "SceneObject.h"
+#include "MobileObject.h"
 // Declaraciones anticipadas
 class Texture;
 
@@ -57,8 +59,6 @@ private:
 	void compruebaDerrota();
 	// Comprueba si has completado un nivel y pasa al siguiente nivel 
 	void compruebaPasoNivel();
-	// Crea una flecha y la mete al vector de flechas
-	void disparaFlecha();
 
 	// Render
 	void render() const;
@@ -87,11 +87,11 @@ private:
 
 	// --- Variables de tiempo y frames
 	// Tiempo entre frames del update
-	float delta;
+	int delta;
 	// Momento en el que se ha creado el globo anterior
-	float creacionGlobo = 0;
+	int creacionGlobo = 0;
 	// Momento en el que se ha cargado la flecha
-	float cargaArco = 0;
+	int cargaArco = 0;
 
 	// --- Configuración del nivels
 	// Puntuación del nivel (Se reinicia al cambiar de nivel)
@@ -126,6 +126,8 @@ public:
 	// Ejecuta el bucle principal del juego
 	void run();
 
+	// Crea una flecha y la mete al vector de flechas
+	void disparaFlecha();
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	bool checkCollision(const Rectangle& rect);
 

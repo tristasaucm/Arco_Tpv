@@ -1,10 +1,13 @@
-#include "rectangle.h"
-#include "vector2D.h"
-#include "game.h"
-#include "texture.h"
+#include "Bow.h"
+using namespace std;
 
-
-Bow::Bow(Rectangle posDim, int numarrows, Texture* texture): posAndDim(posDim), numArrows(numarrows), texture(texture) {}
+Bow::Bow(Rectangle posDim, int numArrows, Texture* texture, Game* game)
+{
+    this->posAndDim = posDim; 
+    this->numArrows = numArrows; 
+    this->texture = texture;
+    this->game = game;
+}
 Bow::~Bow() {}
 void Bow::render() const
 {
@@ -15,10 +18,10 @@ void Bow::render() const
     // Render
     texture->renderFrame(posAndDim.to_sdl(), 0, frame);
 }
-bool Bow::update(float delta) 
+void Bow::update() 
 {
     // MOVIMIENTO
-    posAndDim.move(moveDir * delta);
+    posAndDim.move(moveDir);
     // ---Limite de movimiento hacia arriba
     if (posAndDim.getTopLeftCorner().getY() < 0.0f)
     {
@@ -31,31 +34,34 @@ bool Bow::update(float delta)
         Vector2D<> ajuste(0, 500.0f - posAndDim.getTopLeftCorner().getY());
         posAndDim.move(ajuste);
     }
-
-
-    return false;
 }
 
-void Bow::handleEvent(const SDL_Event& event) {
-    if (event.type == SDL_EVENT_KEY_DOWN) {
-
+void Bow::handleEvent(const SDL_Event& event) 
+{
+    if (event.type == SDL_EVENT_KEY_DOWN) 
+    {
+        // Movimiento hacia arriba
         if (event.key.key == SDLK_UP && posAndDim.getTopLeftCorner().getY() > 0.0f)
         {
             moveDir = Vector2D<>(0, -0.25f);
 
         }
+        // Movimiento hacia abajo
         else if (event.key.key == SDLK_DOWN && posAndDim.getTopLeftCorner().getY() < 500.0f)
         {
             moveDir = Vector2D<>(0, 0.25f);
 
         }
-        else if (event.key.key == SDLK_LEFT)
+        // Cargar arco
+        else if (event.key.key == SDLK_LEFT && !charged && numArrows > 0)
         {
-            if (!charged && numArrows > 0)
-            {
-                charged = true;
-                numArrows--;
-            }
+            charged = true;
+            numArrows--;
+        }
+        // Disparar
+        else if (event.key.key == SDLK_RIGHT && charged)
+        {
+            game->disparaFlecha();
         }
     }
 
@@ -67,19 +73,10 @@ void Bow::handleEvent(const SDL_Event& event) {
         }
     }
 }
+
 float Bow::getYPos() const 
 {
     return posAndDim.getTopLeftCorner().getY() + posAndDim.getHeight() / 2;
-}
-
-bool Bow::Shoot()
-{
-    if (charged)
-    {
-        charged = false;
-        return true;
-    }
-    else return false;
 }
 
 int Bow::getNArrows() const
