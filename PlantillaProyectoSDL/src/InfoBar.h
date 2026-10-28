@@ -3,20 +3,28 @@
 #include "vector2D.h"
 #include "texture.h"
 #include "Bow.h"
+#include "GameObject.h"
 class Game;
 
-class InfoBar {
+class InfoBar : public GameObject
+{
 private:
-	Game* game;
 	Bow* bow;
 	Texture* digitsTexture;
 	Texture* lettersTexture;
 	Texture* arrow2Texture;
+	Texture* balloon;
+	// Frame a renderizar de las letras
+	int frameLetras = 0;
 public:
-	InfoBar(Game*, Bow*, Texture*, Texture*, Texture*);
+	InfoBar(Game*, Bow*);
 	~InfoBar();
-	void RenderNums(int, float)const;
+	void RenderEnteros(int, float)const;
 	void RenderNumFlechas(float )const;
 	void RenderPointsAndLevel(float)const;
-	void render() const;
+	void RenderDerrota() const;
+	void RenderPasoNivel() const;
+
+	void render() const override;
+	void update() override;
 };

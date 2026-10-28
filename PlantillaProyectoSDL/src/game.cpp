@@ -147,7 +147,7 @@ Game::Game()
 	level = 1;
 	leeArchivoNivel(level);
 	delta = (float)SDL_GetTicks();
-	hud = new InfoBar(this, bow, getTexture(DIGITS), getTexture(REWARDS), getTexture(ARROWSLEFT));
+	hud = new InfoBar(this, bow);
 }
 
 Game::~Game()
@@ -187,51 +187,6 @@ void Game::disparaFlecha()
 	Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(0.25f * hSpeedM, 0.0f), textures[ARROW], this);
 	arrows.push_back(newArrow);
 }
-void Game::RenderDerrota()const 
-{
-	float posX = WINDOW_WIDTH / 2;
-	float posY = WINDOW_HEIGHT / 2 - 30;
-	
-	// === P E R D E R ===
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 295, posY, 90, 70), 9, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 195, posY, 90, 70), 1, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 95, posY, 90, 70), 4, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 5, posY, 90, 70), 6, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 105, posY, 90, 70), 1, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 205, posY, 90, 70), 4, frameLetras);
-
-	// === R Flecha RESET ===
-
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 170, WINDOW_HEIGHT - 70, 45, 35), 4, frameLetras);
-
-	textures[ARROW]->renderFrame(SDL_FRect(posX - 125, WINDOW_HEIGHT - 62, 70, 21), 0, 0);
-
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 50, WINDOW_HEIGHT - 70, 45, 35), 4, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX, WINDOW_HEIGHT - 70, 45, 35), 1, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 50, WINDOW_HEIGHT - 70, 45, 35), 3, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 100, WINDOW_HEIGHT - 70, 45, 35), 1, frameLetras);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 150, WINDOW_HEIGHT - 70, 45, 35), 8, frameLetras);
-}
-void Game::RenderPasoNivel()const 
-{
-	// Render normal de fondo
-	render();
-
-	float posX = WINDOW_WIDTH / 2;
-	float posY = WINDOW_HEIGHT / 2 - 30;
-
-	// === S E T   L E B E L === (No hay V)
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 345, posY, 72, 56), 3, 0);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 265, posY, 72, 56), 1, 0);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 185, posY, 72, 56), 8, 0);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX - 40, posY, 72, 56), 0, 0);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 40, posY, 72, 56), 1, 0);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 120, posY, 72, 56), 7, 0);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 200, posY, 72, 56), 1, 0);
-	textures[REWARDS]->renderFrame(SDL_FRect(posX + 280, posY, 72, 56), 0, 0);
-
-	SDL_RenderPresent(renderer);
-}
 void Game::render() const
 {
 	SDL_RenderClear(renderer);
@@ -256,9 +211,6 @@ void Game::render() const
 
 	// Render del hud
 	hud->render();
-
-	// === Render derrota ===
-	if (pierde) RenderDerrota();
 
 	SDL_RenderPresent(renderer);
 }
@@ -296,14 +248,6 @@ void Game::update()
 
 	// delta = tiempo de ahora
 	delta = (float)SDL_GetTicks();
-
-	// Cambio de frame de letras
-	if (SDL_GetTicks() - frameAnteriorLetras > 250.0f)
-	{
-		frameLetras++;
-		if (frameLetras >= textures[REWARDS]->getNumColumns()) frameLetras = 0;
-		frameAnteriorLetras = (float)SDL_GetTicks();
-	}
 }
 
 void
@@ -315,6 +259,7 @@ Game::run()
 		update();
 		render();
 		compruebaDerrota();
+		compruebaPasoNivel();
 	}
 }
 
@@ -380,10 +325,6 @@ void Game::aumentaPuntuacion()
 	points += balpoints;
 	if (goal > 0 && points >= goal) 
 	{
-
-		// --- Indica que se ha completado el nivel
-		RenderPasoNivel();
-
 		// Liberar todas las flechas restantes en el vector
 		for (Arrow* a : arrows) {
 			delete a;
@@ -410,6 +351,25 @@ void Game::compruebaDerrota()
 	}
 }
 
+void Game::compruebaPasoNivel()
+{
+	// Pasamos al siguiente nivel
+	if (pasaNivel) 
+	{
+		pierde = false;
+		pasaNivel = false;
+		points = 0;
+		goal = -1;
+		level++;
+		leeArchivoNivel(level);
+	}
+	// Si hay una meta y la has superado indicamos que hay que pasar al siguiente nivel
+	if (goal > 0 && points > goal && !pasaNivel)
+	{
+		pasaNivel = true;
+	}
+}
+
 int Game::getLevel() const
 {
 	return level;
@@ -418,7 +378,11 @@ int Game::getPoints() const
 {
 	return points;
 }
-int Game::getFrameLetras() const
+bool Game::derrota() const
 {
-	return frameLetras;
+	return pierde;
+}
+bool Game::nivelCompletado() const
+{
+	return pasaNivel;
 }

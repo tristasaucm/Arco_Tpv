@@ -55,13 +55,12 @@ private:
 	void aumentaPuntuacion();
 	// Devuelve true cuando te has quedado sin flechas y no has alcanzado la meta de puntos
 	void compruebaDerrota();
-	// Crea una flecha, la dispara y la mete al vector de flechas
+	// Comprueba si has completado un nivel y pasa al siguiente nivel 
+	void compruebaPasoNivel();
+	// Crea una flecha y la mete al vector de flechas
 	void disparaFlecha();
 
-	// --- Render
-
-	void RenderDerrota() const;
-	void RenderPasoNivel() const;
+	// Render
 	void render() const;
 
 	// --- Update
@@ -93,10 +92,6 @@ private:
 	float creacionGlobo = 0;
 	// Momento en el que se ha cargado la flecha
 	float cargaArco = 0;
-	// Momento en el que se cambio de frame de las letras
-	float frameAnteriorLetras = 0;
-	// Frame a renderizar de las letras
-	int frameLetras = 0;
 
 	// --- Configuración del nivels
 	// Puntuación del nivel (Se reinicia al cambiar de nivel)
@@ -115,8 +110,11 @@ private:
 	bool todosExplotados = true;
 	//Numero de globos que se han generado
 	int numGlobosGenerados = 0;
+
 	// Indica si has perdido
 	bool pierde = false;
+	// Indica si has pasado de nivel
+	bool pasaNivel = false;
 
 public:
 	Game();
@@ -135,8 +133,10 @@ public:
 	int getLevel() const;
 	// Devuelve la puntuación actual
 	int getPoints() const;
-	// Devuelve el frame a renderizar de las letras
-	int getFrameLetras() const;
+	// Devuelve si has perdido
+	bool derrota() const;
+	// Devuelve si has pasado de nivel
+	bool nivelCompletado() const;
 };
 
 inline Texture*
