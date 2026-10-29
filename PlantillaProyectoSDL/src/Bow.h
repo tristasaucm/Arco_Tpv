@@ -1,7 +1,4 @@
 #pragma once
-#include "rectangle.h"
-#include "vector2D.h"
-#include "texture.h"
 #include "SceneObject.h"
 class Game;
 
@@ -13,7 +10,7 @@ private:
 	// Indica si el arco esta cargado
 	bool charged = false;
 public:
-	Bow(Rectangle, int, Texture*, Game*);
+	Bow(Rectangle, int, Texture* ,Game*);
 	~Bow();
 	void handleEvent(const SDL_Event& event);
 	void render() const override;

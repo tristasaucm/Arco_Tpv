@@ -3,7 +3,6 @@
 #include "vector2D.h"
 #include "texture.h"
 #include "MobileObject.h"
-
 class Balloon : public MobileObject
 {
 private:

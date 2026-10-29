@@ -9,13 +9,14 @@
 #include <string>
 #include "vector2D.h"
 #include "rectangle.h"
+#include "GameObject.h"
+#include "SceneObject.h"
+#include "MobileObject.h"
 #include "Balloon.h"
 #include "Arrow.h"
 #include "Bow.h"
 #include "InfoBar.h"
-#include "GameObject.h"
-#include "SceneObject.h"
-#include "MobileObject.h"
+
 // Declaraciones anticipadas
 class Texture;
 

@@ -1,7 +1,4 @@
 #pragma once
-#include "rectangle.h"
-#include "vector2D.h"
-#include "texture.h"
 #include "MobileObject.h"
 class Game;
 

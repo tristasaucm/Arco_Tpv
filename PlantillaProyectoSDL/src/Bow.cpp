@@ -61,7 +61,7 @@ void Bow::handleEvent(const SDL_Event& event)
         // Disparar
         else if (event.key.key == SDLK_RIGHT && charged)
         {
-            game->disparaFlecha();
+            this->game->disparaFlecha();
         }
     }
 

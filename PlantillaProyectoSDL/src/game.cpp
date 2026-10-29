@@ -139,7 +139,7 @@ Game::Game()
 	}
 	// Configura que se pueden utilizar capas translúcidas
 	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	bow = new Bow(Rectangle(Point2D<>(0.0f, 250.0f), 70, 100), 10, textures[BOW]);//Creamos el arco
+	bow = new Bow(Rectangle(Point2D<>(0.0f, 250.0f), 70, 100), 10, textures[BOW],this);//Creamos el arco
 	//Limpiamos los vectores que vamos a usar
 	arrows.clear();
 	balloons.clear();
