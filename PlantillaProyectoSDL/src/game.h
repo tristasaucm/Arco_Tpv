@@ -7,6 +7,7 @@
 #include <istream>
 #include <random>
 #include <string>
+#include <list>
 #include "vector2D.h"
 #include "rectangle.h"
 #include "GameObject.h"
@@ -66,8 +67,6 @@ private:
 
 	// --- Update
 
-	void UpdateBallons();
-	void UpdateArrows();
 	void update();
 
 	// --- Handle events
@@ -78,13 +77,7 @@ private:
 
 	// --- Elementos del juego
 	// HUD del juego con nivel, puntuacion y flechas restantes
-	InfoBar* hud;
-	// Arco
-	Bow* bow;
-	// Array de flechas
-	std::vector<Arrow*> arrows;
-	// Array de globos
-	std::vector<Balloon*> balloons;
+	std::list<GameObject*> objetos;
 
 	// --- Variables de tiempo y frames
 	// Tiempo entre frames del update
