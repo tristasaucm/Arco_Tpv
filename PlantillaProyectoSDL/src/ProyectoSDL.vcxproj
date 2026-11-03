@@ -106,6 +106,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MobileObject.cpp" />
     <ClCompile Include="rectangle.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>

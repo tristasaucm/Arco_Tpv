@@ -10,6 +10,5 @@ public:
 	~MobileObject();
 	void update() override;
 	virtual void render() const = 0;
-
-
+	bool hit(const Rectangle&) override;
 };

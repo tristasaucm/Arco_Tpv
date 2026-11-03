@@ -1,7 +1,4 @@
 #pragma once
-#include "rectangle.h"
-#include "vector2D.h"
-#include "texture.h"
 #include "MobileObject.h"
 class Balloon : public MobileObject
 {
@@ -16,7 +13,8 @@ private:
 public:
 	Balloon(Rectangle, Vector2D<>, int, Texture*);
 	~Balloon();
-	bool hit(const Rectangle&);
 
 	void render() const override;
+	bool hit(const Rectangle&) override;
+	void update() override;
 };

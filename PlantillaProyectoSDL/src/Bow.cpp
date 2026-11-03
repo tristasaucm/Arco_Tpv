@@ -1,4 +1,5 @@
 #include "Bow.h"
+#include "game.h"
 using namespace std;
 
 Bow::Bow(Rectangle posDim, int numArrows, Texture* texture, Game* game)
@@ -43,13 +44,13 @@ void Bow::handleEvent(const SDL_Event& event)
         // Movimiento hacia arriba
         if (event.key.key == SDLK_UP && posAndDim.getTopLeftCorner().getY() > 0.0f)
         {
-            moveDir = Vector2D<>(0, -0.25f);
+            moveDir = Vector2D<>(0, -1);
 
         }
         // Movimiento hacia abajo
         else if (event.key.key == SDLK_DOWN && posAndDim.getTopLeftCorner().getY() < 500.0f)
         {
-            moveDir = Vector2D<>(0, 0.25f);
+            moveDir = Vector2D<>(0, 1);
 
         }
         // Cargar arco

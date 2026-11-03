@@ -18,7 +18,7 @@ mt19937 gen(rd());
 // Aqui se encuentran los valores entre los que se varia para el random de los globos
 uniform_int_distribution<int> colorRd(0, 6);
 uniform_int_distribution<int> PosRd(200, 700);
-uniform_real_distribution<float> velRd(-0.5f, -0.1f);
+uniform_real_distribution<float> velRd(-2, -1);
 
 
 using uint = unsigned int; // alias para el tipo unsigned int
@@ -184,7 +184,7 @@ void Game::disparaFlecha()
 	float hSpeedM = 1.0f + (SDL_GetTicks() - cargaArco) / 1000;
 	if (hSpeedM > 3.0f) hSpeedM = 3.0f;
 
-	Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(0.25f * hSpeedM, 0.0f), textures[ARROW], this);
+	Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(1 * hSpeedM, 0.0f), textures[ARROW], this);
 	arrows.push_back(newArrow);
 }
 void Game::render() const

@@ -10,3 +10,6 @@ void MobileObject::update()
 {
 	posAndDim.move(speed);
 }
+bool MobileObject::hit(cosnt Rectangle& obj) {
+
+}

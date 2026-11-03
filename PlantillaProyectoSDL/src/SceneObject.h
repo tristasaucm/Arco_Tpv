@@ -1,5 +1,4 @@
 #pragma once
-class Game;
 #include "GameObject.h"
 #include "rectangle.h"
 #include "texture.h"
