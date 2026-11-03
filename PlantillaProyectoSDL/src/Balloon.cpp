@@ -31,10 +31,13 @@ void Balloon::update() {
 }
 bool Balloon::hit(const Rectangle& obj)
 {
-	if (!animacion) {
-		return posAndDim.hasIntersection(obj);
+	if (!animacion) 
+	{
+		animacion = posAndDim.hasIntersection(obj);
+		return animacion;
 	}
-	else {
+	else 
+	{
 		return false;
 	}
 }
