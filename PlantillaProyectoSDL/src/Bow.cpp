@@ -19,7 +19,7 @@ void Bow::render() const
     // Render
     texture->renderFrame(posAndDim.to_sdl(), 0, frame);
 }
-void Bow::update() 
+bool Bow::update() 
 {
     // MOVIMIENTO
     posAndDim.move(moveDir);
@@ -35,6 +35,7 @@ void Bow::update()
         Vector2D<> ajuste(0, 500.0f - posAndDim.getTopLeftCorner().getY());
         posAndDim.move(ajuste);
     }
+    return false;
 }
 
 void Bow::handleEvent(const SDL_Event& event) 

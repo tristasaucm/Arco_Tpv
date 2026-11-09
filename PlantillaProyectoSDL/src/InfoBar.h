@@ -23,5 +23,5 @@ public:
 	void RenderPasoNivel() const;
 
 	void render() const override;
-	void update() override;
+	bool update() override;
 };

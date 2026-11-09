@@ -130,10 +130,11 @@ void InfoBar::render() const
 	if (game->nivelCompletado()) RenderPasoNivel();
 }
 
-void InfoBar::update() 
+bool InfoBar::update() 
 {
 	// Actualizamos el frame de la animacion del globo indicador de puntos explotando
 	frameLetras++;
 	// Volver al primer frame de la animación
 	if (frameLetras > balloon->getNumColumns()) frameLetras = 0;
+	return false;
 }

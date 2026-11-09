@@ -8,7 +8,10 @@ Balloon::Balloon(Rectangle posAndDim, Vector2D<> speed, int color, Texture* text
 	this->speed = speed;
 }
 Balloon::~Balloon(){}
-
+void Balloon::avanzaFrame() 
+{
+	frame++;
+}
 void Balloon::render() const
 {
 	// Si aún no ha sido explotado
@@ -22,13 +25,7 @@ void Balloon::render() const
 		texture->renderFrame(posAndDim.to_sdl(), color, frame);
 	}
 }
-void Balloon::update() {
-	if (animacion) {
-		frame++;
-	}
-	posAndDim.move(speed);
-	
-}
+
 bool Balloon::hit(const Rectangle& obj)
 {
 	if (!animacion) 

@@ -1,16 +1,11 @@
 #include "MobileObject.h"
+#include "game.h"
 using namespace std;
-MobileObject::MobileObject() {
 
-}
-MobileObject::~MobileObject() {
-
-}
-void MobileObject::update() 
+bool MobileObject::update() 
 {
 	posAndDim.move(speed);
-}
-bool MobileObject::hit(const Rectangle& obj)
-{
-	return false;
+	// Si se sale de la pantalla
+	if (posAndDim.getTopLeftCorner().getX() > game->WINDOW_WIDTH || posAndDim.getTopLeftCorner().getY() + posAndDim.getHeight() < 0) return true;
+	else return false;
 }

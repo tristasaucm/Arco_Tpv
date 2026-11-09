@@ -12,7 +12,7 @@ public:
 	~Bow();
 	void handleEvent(const SDL_Event& event);
 	void render() const override;
-	void update() override;
+	bool update() override;
 
 	// Devuelve el numero de flechas restantes
 	int getNArrows() const;

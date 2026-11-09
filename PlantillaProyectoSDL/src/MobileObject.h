@@ -2,13 +2,10 @@
 #include "SceneObject.h"
 class MobileObject : public SceneObject
 {
-private:
+protected:
+	Vector2D<> speed;
 	
 public:
-	Vector2D<> speed;
-	MobileObject();
-	~MobileObject();
-	void update() override;
-	virtual void render() const = 0;
-	bool hit(const Rectangle&) override;
+	// Devuelve true si se sale de la pantalla
+	bool update() override;
 };

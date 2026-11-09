@@ -10,11 +10,11 @@ private:
 	float frameAnterior = 0;
 	// Frame a renderizar
 	int frame = 0;
+	void avanzaFrame();
 public:
 	Balloon(Rectangle, Vector2D<>, int, Texture*);
 	~Balloon();
 
 	void render() const override;
 	bool hit(const Rectangle&) override;
-	void update() override;
 };

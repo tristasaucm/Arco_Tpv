@@ -3,11 +3,12 @@
 class Game;
 class GameObject
 {
-private:
+protected:
+	Game* game;
 	
 public:
-	Game* game;
 	virtual void render() const = 0;
-	virtual	void update() = 0;
+	// Devuelve true si se sale de la pantalla
+	virtual	bool update() = 0;
 
 };
