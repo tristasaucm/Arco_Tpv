@@ -44,6 +44,7 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	TextureSpec{"bow.png", 1, 2},
 	{"arrow.png"},
 	{"balloons.png", 7, 6},
+	{"butterfly.png", 4, 10},
 	{"arrow2.png"},
 	{"digits.png", 1, 10},
 	{"rewards.png", 10, 8},
@@ -145,16 +146,14 @@ Game::Game()
 	// Configura que se pueden utilizar capas translúcidas
 	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	
-	// TODO: Meter el arco y el hud a la lista
 	
-	// bow = new Bow(Rectangle(Point2D<>(0.0f, 250.0f), 70, 100), 10, textures[BOW],this);//Creamos el arco
-
+	bow = new Bow(Rectangle(Point2D<>(0.0f, 250.0f), 70, 100), 10, textures[BOW],this);//Creamos el arco
 	//Establecemos el primer nivel que vamos a elegir y lo cargamos
 	level = 1;
 	leeArchivoNivel(level);
 	delta = (int)SDL_GetTicks();
 
-	// hud = new InfoBar(this, bow);
+	Hud = new InfoBar(this, bow);
 }
 
 Game::~Game()
@@ -163,7 +162,12 @@ Game::~Game()
 	SDL_DestroyWindow(window);
 	
 	//TODO:Liberar la lista
-
+	
+	delete bow;// Borramos el arco
+	delete Hud; // Borramos el HUD
+	for (SceneObject* obj : objetos) {
+		delete obj;
+	}
 	//Liberamos la memoria que ocupan las texturas
 	for (size_t i = 0; i < textures.size(); i++) {
 		delete textures[i];
@@ -173,16 +177,16 @@ Game::~Game()
 void Game::disparaFlecha() 
 {
 	// TODO:Meter Flecha a la lista
-	/*
+	
 	// Creamos una flecha, la disparamos y la metemos en el vector de flechas
 	float arrowY = bow->getYPos() - 6.0f;
 
 	// Multiplicador de velocidad
-	float hSpeedM = 1.0f + (SDL_GetTicks() - cargaArco) / 1000;
+	float hSpeedM = 1.0f + (SDL_GetTicks() - bow->getChargeTime()) / 1000;
 	if (hSpeedM > 3.0f) hSpeedM = 3.0f;
 
 	Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(1 * hSpeedM, 0.0f), textures[ARROW], this);
-	*/
+	objetos.push_back(newArrow);
 }
 void Game::render() const
 {
@@ -190,17 +194,31 @@ void Game::render() const
 
 	SDL_SetRenderDrawColor(renderer, bg_r, bg_g, bg_b, 255);
 
-
+	bow->render();
 	//TODO: Render de toda la lista
-
-
+	for (auto it = objetos.begin(); it != objetos.end(); ++it) 
+	{
+		(*it)->render();
+	}
+	Hud->render();
 	SDL_RenderPresent(renderer);
 }
 void Game::update()
 {
-
+	bow->update();
 	//TODO: Actualizar la lista
-
+	for (auto it = objetos.begin(); it != objetos.end();)
+	{
+		if ((*it)->update())
+		{
+			delete* it;
+			it = objetos.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 	// Genera globos con intervalo de tiempo
 	BalloonGeneration();
 
@@ -248,14 +266,9 @@ Game::handleEvents()
 			leeArchivoNivel(level);
 		}
 		else 
-		{
-			// TODO
-			// Para Cambiar la velocidad de la flecha en funcion de cuanto tiempo esta cargada
-			// if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_LEFT && !bow->isCharged()) cargaArco = (int)SDL_GetTicks();
-			
-			// TODO
+		{	
 			// Manejo de eventos del arco
-			// bow->handleEvent(event);
+			bow->handleEvent(event);
 		}
 	}
 }

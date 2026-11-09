@@ -40,6 +40,7 @@ public:
 		BOW = 0,
 		ARROW,
 		BALLOON,
+		BUTTERFLY,
 		ARROWSLEFT,
 		DIGITS,
 		REWARDS,
@@ -76,9 +77,9 @@ private:
 	bool exit;
 
 	// --- Elementos del juego
-	// HUD del juego con nivel, puntuacion y flechas restantes
-	std::list<GameObject*> objetos;
-
+	std::list<SceneObject*> objetos;
+	Bow* bow;
+	GameObject* Hud;
 	// --- Variables de tiempo y frames
 	// Tiempo entre frames del update
 	int delta;
