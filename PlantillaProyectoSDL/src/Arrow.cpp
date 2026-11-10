@@ -16,13 +16,14 @@ void Arrow::render()const
 }
 bool Arrow::update(float dt) 
 {
-    if (MobileObject::update(dt)) game->reduceNumFlechas();
+    bool ret = MobileObject::update(dt);
+    if (ret) game->reduceNumFlechas();
     if (game->checkCollision(getPunta())) 
     {
         globosExplotados++;
         game->aumentaPuntuacion(GetCombo());
     }
-    return MobileObject::update(dt);
+    return ret;
 }
 Rectangle Arrow::getPunta()const
 {

@@ -31,27 +31,26 @@ void Balloon::render() const
 // Devuelve true si se sale de la pantalla
 bool Balloon::update(float dt) 
 {
-	if (MobileObject::update(dt)) game->reduceNumGlobos();
-	if (animacion && SDL_GetTicks() > frameAnterior + 500) 
+	bool ret = MobileObject::update(dt);
+	if (ret) game->reduceNumGlobos();
+	if (animacion && (SDL_GetTicks() - frameAnterior) > 100) 
 	{
+		if (speed.getY() < 0) speed = speed * -1;
 		frame++;
 		frameAnterior = (float)SDL_GetTicks();
 	}
-	if (frame > texture->getNumColumns()) 
-	{
-		return true;
-	}
-	return MobileObject::update(dt);
+	return ret;
 }
 bool Balloon::hit(const Rectangle& obj)
 {
 	if (!animacion) 
 	{
 		animacion = posAndDim.hasIntersection(obj);
-		return animacion;
 	}
-	else 
+	else if (frame > texture->getNumColumns())
 	{
-		return false;
+		game->reduceNumGlobos();
+		return true;
 	}
+	return false;
 }
