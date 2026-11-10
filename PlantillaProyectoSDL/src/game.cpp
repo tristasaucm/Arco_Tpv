@@ -217,7 +217,18 @@ void Game::update(float dt)
 	Hud->update(dt);
 	// Genera globos con intervalo de tiempo
 	BalloonGeneration();
+	if (numFlechasActivas > 0) 
+	{
+		for (auto obj = objetos.begin(); obj != objetos.end();++obj)
+		{
+			Arrow* arrow = dynamic_cast<Arrow*>(*obj);
 
+			if (arrow != nullptr)
+			{
+				checkCollision((*arrow).getPunta());
+			}
+		}
+	}
 }
 
 void
@@ -280,6 +291,10 @@ bool Game::checkCollision(const Rectangle& rect)
 			delete* obj;
 			obj = objetos.erase(obj);
 		}
+		else 
+		{
+			++obj;
+		}
 	}
 	return false;
 }
@@ -302,8 +317,8 @@ void Game::compruebaDerrota()
 
 void Game::compruebaPasoNivel()
 {
-	// Pasamos al siguiente nivel
-	if (pasaNivel) 
+	// Pasamos al siguiente nivel (Despues de 2 segundos para indicar el paso)
+	if (pasaNivel && SDL_GetTicks() > tiempoPasoNivel + 2000) 
 	{
 		pierde = false;
 		pasaNivel = false;
@@ -313,9 +328,10 @@ void Game::compruebaPasoNivel()
 		leeArchivoNivel(level);
 	}
 	// Si hay una meta y la has superado indicamos que hay que pasar al siguiente nivel
-	else if (goal > 0 && points >= goal)
+	else if (!pasaNivel && goal > 0 && points >= goal)
 	{
 		pasaNivel = true;
+		tiempoPasoNivel = (float)SDL_GetTicks();
 	}
 }
 

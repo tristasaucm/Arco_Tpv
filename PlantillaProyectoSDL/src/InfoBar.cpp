@@ -102,9 +102,6 @@ void InfoBar::RenderDerrota()const
 }
 void InfoBar::RenderPasoNivel()const
 {
-	// Render normal de fondo
-	render();
-
 	float posX = game->WINDOW_WIDTH / 2;
 	float posY = game->WINDOW_HEIGHT / 2 - 30;
 

@@ -21,4 +21,8 @@ void Arrow::render() const
     texture->renderFrame(posAndDim.to_sdl(), 0, 0);
 }
 
-
+Rectangle Arrow::getPunta()const
+{
+    Point2D<> topLeft = Point2D<>(posAndDim.getTopLeftCorner().getX() + (3 * posAndDim.getWidth() / 4), posAndDim.getTopLeftCorner().getY());
+    return Rectangle(topLeft, posAndDim.getWidth() / 4, posAndDim.getHeight());
+}

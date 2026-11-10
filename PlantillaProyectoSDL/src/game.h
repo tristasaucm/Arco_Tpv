@@ -85,8 +85,8 @@ private:
 	int delta;
 	// Momento en el que se ha creado el globo anterior
 	int creacionGlobo = 0;
-	// Momento en el que se ha cargado la flecha
-	int cargaArco = 0;
+	// Momento en el que se ha pasado de nivel
+	int tiempoPasoNivel = 0;
 
 	// --- Configuración del nivels
 	// Puntuación del nivel (Se reinicia al cambiar de nivel)
