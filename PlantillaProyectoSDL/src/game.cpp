@@ -76,7 +76,7 @@ void Game::leeArchivoNivel(int level)
 	archivo.close();// cerramos el archivo
 
 	// TODO: Cambiamos el numero de flechas
-	// bow->setNumArrows(Numarrows);
+	bow->setNumArrows(Numarrows);
 }
  void Game::BalloonGeneration() 
  {

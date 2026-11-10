@@ -89,7 +89,7 @@ void InfoBar::RenderDerrota()const
 	lettersTexture->renderFrame(SDL_FRect(posX + 205, posY, 90, 70), 4, frameLetras);
 
 	// === R Flecha RESET ===
-	posY = game->WINDOW_HEIGHT;
+	posY = game->WINDOW_HEIGHT - 50;
 	lettersTexture->renderFrame(SDL_FRect(posX - 170, posY, 45, 35), 4, frameLetras);
 
 	arrow2Texture->renderFrame(SDL_FRect(posX - 125, posY + 10, 70, 21), 0, 0);
