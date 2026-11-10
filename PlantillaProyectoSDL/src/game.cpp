@@ -80,37 +80,21 @@ void Game::leeArchivoNivel(int level)
 }
  void Game::BalloonGeneration() 
  {
-	/*
-	// Genera 10 globos a la vez cuando ya no queda ninguno
-	if (todosExplotados)
+	// Genera globos seguidos con delay cuando haya menos de 10
+	if (numGlobosGenerados < 10 && SDL_GetTicks() - creacionGlobo > baldelay)
 	{
-		
-		if (balloons.size() < 10 && SDL_GetTicks() - creacionGlobo > baldelay) {
-			int col = colorRd(gen);
-			float pos = (float)PosRd(gen);
+		int col = colorRd(gen);
+		float pos = (float)PosRd(gen);
 
-			Rectangle posDim = Rectangle(Point2D<>(pos, 700.0f), 65.0f, 75.0f);
-			Vector2D<> speed = Point2D<>(0.0f, velRd(gen));
-			Balloon* bal = new Balloon(posDim, speed, col, textures[BALLOON]);
+		Rectangle posDim = Rectangle(Point2D<>(pos, 700.0f), 65.0f, 75.0f);
+		Vector2D<> speed = Point2D<>(0.0f, velRd(gen));
+		Balloon* bal = new Balloon(posDim, speed, col, textures[BALLOON]);
 
-			balloons.push_back(bal);
-			//guardamos el tiempo de creaccion del ultimo globo
-			numGlobosGenerados++;
-			creacionGlobo = (int)SDL_GetTicks();
-		}
-
-		if (numGlobosGenerados >= 10) {
-			todosExplotados = false;
-		}
-		
+		objetos.push_back(bal);
+		creacionGlobo = (int)SDL_GetTicks();
+		//guardamos el tiempo de creaccion del ultimo globo
+		numGlobosGenerados++;
 	}
-	else {
-		if (balloons.size() == 0) {
-			todosExplotados = true;
-			numGlobosGenerados = 0;
-		}
-	}
-	*/
  }
 Game::Game()
 {
@@ -211,6 +195,12 @@ void Game::update()
 	{
 		if ((*it)->update())
 		{
+			// Si es un globo
+			if (dynamic_cast<Balloon*>(*it))
+			{
+				// Indicamos que se ha reducido el numero de globos para que se genere otro
+				numGlobosGenerados--;
+			}
 			delete* it;
 			it = objetos.erase(it);
 		}
@@ -275,16 +265,17 @@ Game::handleEvents()
 
 bool Game::checkCollision(const Rectangle& rect)
 {
-	bool golpea = false;
-	/* Comprobar colisiones de los globos
-	for (auto it = balloons.begin(); it != balloons.end(); )
+	for (auto obj = objetos.begin(); obj != objetos.end();)
 	{
-		golpea = (*it)->hit(rect);
-		if (golpea) aumentaPuntuacion();
-		++it;
+		if ((*obj)->hit(rect)) 
+		{
+			numGlobosGenerados--;
+			aumentaPuntuacion();
+			delete* obj;
+			obj = objetos.erase(obj);
+		}
 	}
-	*/
-	return golpea;
+	return false;
 }
 
 void Game::aumentaPuntuacion() 

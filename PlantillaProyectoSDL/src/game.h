@@ -101,8 +101,8 @@ private:
 	int goal = 0;
 	// Nivel actual
 	int level = 0;
-	// Comprueba si se han explotado todos los globos
-	bool todosExplotados = true;
+
+
 	//Numero de globos que se han generado
 	int numGlobosGenerados = 0;
 
