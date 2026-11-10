@@ -7,7 +7,7 @@ Balloon::Balloon(Rectangle posAndDim, Vector2D<> speed, int color, Texture* text
 	this->posAndDim = posAndDim;
 	this->speed = speed;
 }
-Balloon::~Balloon(){}
+
 void Balloon::avanzaFrame() 
 {
 	frame++;

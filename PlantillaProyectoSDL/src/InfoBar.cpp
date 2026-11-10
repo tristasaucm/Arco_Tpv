@@ -13,7 +13,6 @@ InfoBar::InfoBar(Game* game, Bow* bow)
 	arrow2Texture = game->getTexture(game->ARROWSLEFT);
 	balloon = game->getTexture(game->BALLOON);
 }
-InfoBar::~InfoBar(){}
 // Renderiza un entero en la parte superior de la pantalla centrado en la xpos
 void InfoBar::RenderEnteros(int num, float xpos)const
 {

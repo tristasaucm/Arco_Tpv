@@ -13,7 +13,6 @@ private:
 	float mouseY = 0;
 public:
 	Bow(Rectangle, int, Texture*, Game*);
-	~Bow();
 	void handleEvent(const SDL_Event& event);
 	void render() const override;
 	bool update(float dt) override;

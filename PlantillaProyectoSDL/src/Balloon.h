@@ -13,7 +13,6 @@ private:
 	void avanzaFrame();
 public:
 	Balloon(Rectangle, Vector2D<>, int, Texture*);
-	~Balloon();
 
 	void render() const override;
 	bool hit(const Rectangle&) override;

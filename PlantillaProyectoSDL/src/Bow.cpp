@@ -9,7 +9,7 @@ Bow::Bow(Rectangle posDim, int numArrows, Texture* texture, Game* game)
     this->texture = texture;
     this->game = game;
 }
-Bow::~Bow() {}
+
 void Bow::render() const
 {
     // Frame arco no cargado

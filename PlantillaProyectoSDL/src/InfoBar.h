@@ -16,7 +16,6 @@ private:
 	float frameAnterior = 0;
 public:
 	InfoBar(Game*, Bow*);
-	~InfoBar();
 	void RenderEnteros(int, float)const;
 	void RenderNumFlechas(float )const;
 	void RenderPointsAndLevel(float)const;

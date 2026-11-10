@@ -9,7 +9,7 @@ Arrow::Arrow(Rectangle posAndDim, Vector2D<> speed, Texture* texture, Game* game
     this->speed = speed;
     this->game = game;
 }
-Arrow::~Arrow() {}
+
 void Arrow::render()const
 {
     texture->renderFrame(posAndDim.to_sdl(), 0, 0);
