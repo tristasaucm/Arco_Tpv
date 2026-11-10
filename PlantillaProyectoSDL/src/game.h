@@ -46,6 +46,28 @@ public:
 		REWARDS,
 		NUM_TEXTURES
 	};
+	Game();
+	~Game();
+
+	// Obtiene una textura por su nombre
+	Texture* getTexture(TextureName name) const;
+
+	// Ejecuta el bucle principal del juego
+	void run();
+
+	// Crea una flecha y la mete al vector de flechas
+	void disparaFlecha();
+	// Comprueba si hay algún objeto colocado en ese rectángulo
+	bool checkCollision(const Rectangle& rect);
+
+	// Devuelve el nivel actual
+	int getLevel() const;
+	// Devuelve la puntuación actual
+	int getPoints() const;
+	// Devuelve si has perdido
+	bool derrota() const;
+	// Devuelve si has pasado de nivel
+	bool nivelCompletado() const;
 
 private:
 	SDL_Window* window;
@@ -57,7 +79,7 @@ private:
 	// Genera un globo si ha pasado el tiempo suficiente desde el anterior
 	void BalloonGeneration();
 	// Aumenta la puntuacion la cantidad de balpoints
-	void aumentaPuntuacion();
+	void aumentaPuntuacion(int);
 	// Devuelve true cuando te has quedado sin flechas y no has alcanzado la meta de puntos
 	void compruebaDerrota();
 	// Comprueba si has completado un nivel y pasa al siguiente nivel 
@@ -113,29 +135,7 @@ private:
 	// Indica si has pasado de nivel
 	bool pasaNivel = false;
 
-public:
-	Game();
-	~Game();
-
-	// Obtiene una textura por su nombre
-	Texture* getTexture(TextureName name) const;
-
-	// Ejecuta el bucle principal del juego
-	void run();
-
-	// Crea una flecha y la mete al vector de flechas
-	void disparaFlecha();
-	// Comprueba si hay algún objeto colocado en ese rectángulo
-	bool checkCollision(const Rectangle& rect);
-
-	// Devuelve el nivel actual
-	int getLevel() const;
-	// Devuelve la puntuación actual
-	int getPoints() const;
-	// Devuelve si has perdido
-	bool derrota() const;
-	// Devuelve si has pasado de nivel
-	bool nivelCompletado() const;
+	
 };
 
 inline Texture*

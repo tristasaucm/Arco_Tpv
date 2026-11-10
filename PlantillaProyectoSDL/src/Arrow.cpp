@@ -10,14 +10,8 @@ Arrow::Arrow(Rectangle posAndDim, Vector2D<> speed, Texture* texture, Game* game
     this->game = game;
 }
 Arrow::~Arrow() {}
-void Arrow::render() const
+void Arrow::render()const
 {
-    /*
-        Colisiones
-        Point2D<> topLeft = Point2D<>(posAndDim.getTopLeftCorner().getX() + (3 * posAndDim.getWidth() / 4), posAndDim.getTopLeftCorner().getY());
-        Rectangle punta = Rectangle(topLeft, posAndDim.getWidth() / 4, posAndDim.getHeight());
-        game->checkCollision(punta);
-    */
     texture->renderFrame(posAndDim.to_sdl(), 0, 0);
 }
 
@@ -25,4 +19,11 @@ Rectangle Arrow::getPunta()const
 {
     Point2D<> topLeft = Point2D<>(posAndDim.getTopLeftCorner().getX() + (3 * posAndDim.getWidth() / 4), posAndDim.getTopLeftCorner().getY());
     return Rectangle(topLeft, posAndDim.getWidth() / 4, posAndDim.getHeight());
+}
+int Arrow::GetCombo()const 
+{
+    return (globosExplotados - 1) * 5;
+}
+void Arrow::SumaCombo() {
+    globosExplotados++;
 }

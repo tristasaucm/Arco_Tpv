@@ -225,7 +225,10 @@ void Game::update(float dt)
 
 			if (arrow != nullptr)
 			{
-				checkCollision((*arrow).getPunta());
+				if (checkCollision((*arrow).getPunta())) {
+					arrow->SumaCombo();
+					aumentaPuntuacion(arrow->GetCombo());
+				}
 			}
 		}
 	}
@@ -286,10 +289,11 @@ bool Game::checkCollision(const Rectangle& rect)
 	{
 		if ((*obj)->hit(rect)) 
 		{
+
 			numGlobosGenerados--;
-			aumentaPuntuacion();
 			delete* obj;
 			obj = objetos.erase(obj);
+			return true;
 		}
 		else 
 		{
@@ -299,9 +303,9 @@ bool Game::checkCollision(const Rectangle& rect)
 	return false;
 }
 
-void Game::aumentaPuntuacion() 
+void Game::aumentaPuntuacion(int combo) 
 {
-	points += balpoints;
+	points += balpoints +combo;
 }
 
 void Game::compruebaDerrota() 
