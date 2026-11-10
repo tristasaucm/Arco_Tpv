@@ -120,6 +120,10 @@ private:
 	int baldelay = 0;
 	// Puntos que suma cada globo
 	int balpoints = 0;
+	// Velocidad base de los globos
+	float balSpeed = 0;
+	// Cantidad de mariposas
+	int butterflies = 0;
 	// Puntos objetivo del nivel
 	int goal = 0;
 	// Nivel actual

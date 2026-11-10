@@ -69,6 +69,12 @@ void Game::leeArchivoNivel(int level)
 		else if (clave == "balpoints") {
 			archivo >> balpoints;
 		}
+		else if (clave == "balspeed") {
+			archivo >> balSpeed;
+		}
+		else if (clave == "butterflies") {
+			archivo >> butterflies;
+		}
 		else if (clave == "goal") {
 			archivo >> goal;
 		}
@@ -87,7 +93,7 @@ void Game::leeArchivoNivel(int level)
 		float pos = (float)PosRd(gen);
 
 		Rectangle posDim = Rectangle(Point2D<>(pos, 700.0f), 65.0f, 70.0f);
-		Vector2D<> speed = Point2D<>(0.0f, velRd(gen));
+		Vector2D<> speed = Point2D<>(0.0f, balSpeed + velRd(gen));
 		Balloon* bal = new Balloon(posDim, speed, col, textures[BALLOON], this);
 
 		objetos.push_back(bal);
@@ -292,7 +298,7 @@ void Game::compruebaDerrota()
 {
 	// TODO
 	
-	if (bow->getNArrows() == 0 && !bow->isCharged() && numFlechasActivas == 0 && ((points < goal && goal > 0) || goal < 0))
+	if (bow->getNArrows() == 0 && !bow->isCharged() && numFlechasActivas == 0 && ((points < goal && goal > 0) || goal == 0))
 	{
 		pierde = true;
 	}
@@ -307,7 +313,7 @@ void Game::compruebaPasoNivel()
 		pierde = false;
 		pasaNivel = false;
 		points = 0;
-		goal = -1;
+		goal = 0;
 		level++;
 		leeArchivoNivel(level);
 	}
