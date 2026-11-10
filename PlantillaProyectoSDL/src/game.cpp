@@ -88,7 +88,7 @@ void Game::leeArchivoNivel(int level)
 
 		Rectangle posDim = Rectangle(Point2D<>(pos, 700.0f), 65.0f, 70.0f);
 		Vector2D<> speed = Point2D<>(0.0f, velRd(gen));
-		Balloon* bal = new Balloon(posDim, speed, col, textures[BALLOON]);
+		Balloon* bal = new Balloon(posDim, speed, col, textures[BALLOON], this);
 
 		objetos.push_back(bal);
 		creacionGlobo = (int)SDL_GetTicks();
@@ -195,17 +195,6 @@ void Game::update(float dt)
 	{
 		if ((*it)->update(dt))
 		{
-			// Si es un globo
-			if (dynamic_cast<Balloon*>(*it))
-			{
-				// Indicamos que se ha reducido el numero de globos para que se genere otro
-				numGlobosGenerados--;
-			}
-			// Si es una flecha
-			else 
-			{
-				numFlechasActivas--;
-			}
 			delete* it;
 			it = objetos.erase(it);
 		}
@@ -217,21 +206,6 @@ void Game::update(float dt)
 	Hud->update(dt);
 	// Genera globos con intervalo de tiempo
 	BalloonGeneration();
-	if (numFlechasActivas > 0) 
-	{
-		for (auto obj = objetos.begin(); obj != objetos.end();++obj)
-		{
-			Arrow* arrow = dynamic_cast<Arrow*>(*obj);
-
-			if (arrow != nullptr)
-			{
-				if (checkCollision((*arrow).getPunta())) {
-					arrow->SumaCombo();
-					aumentaPuntuacion(arrow->GetCombo());
-				}
-			}
-		}
-	}
 }
 
 void
@@ -289,7 +263,6 @@ bool Game::checkCollision(const Rectangle& rect)
 	{
 		if ((*obj)->hit(rect)) 
 		{
-
 			numGlobosGenerados--;
 			delete* obj;
 			obj = objetos.erase(obj);
@@ -302,7 +275,14 @@ bool Game::checkCollision(const Rectangle& rect)
 	}
 	return false;
 }
-
+void Game::reduceNumGlobos() 
+{
+	numGlobosGenerados--;
+}
+void Game::reduceNumFlechas() 
+{
+	numFlechasActivas--;
+}
 void Game::aumentaPuntuacion(int combo) 
 {
 	points += balpoints +combo;

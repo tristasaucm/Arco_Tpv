@@ -1,11 +1,13 @@
 #include "Balloon.h"
+#include "game.h"
 using namespace std;
 
-Balloon::Balloon(Rectangle posAndDim, Vector2D<> speed, int color, Texture* texture): color(color) 
+Balloon::Balloon(Rectangle posAndDim, Vector2D<> speed, int color, Texture* texture, Game* game): color(color) 
 {
 	this->texture = texture;
 	this->posAndDim = posAndDim;
 	this->speed = speed;
+	this->game = game;
 }
 
 void Balloon::avanzaFrame() 
@@ -26,6 +28,21 @@ void Balloon::render() const
 	}
 }
 
+// Devuelve true si se sale de la pantalla
+bool Balloon::update(float dt) 
+{
+	if (MobileObject::update(dt)) game->reduceNumGlobos();
+	if (animacion && SDL_GetTicks() > frameAnterior + 500) 
+	{
+		frame++;
+		frameAnterior = (float)SDL_GetTicks();
+	}
+	if (frame > texture->getNumColumns()) 
+	{
+		return true;
+	}
+	return MobileObject::update(dt);
+}
 bool Balloon::hit(const Rectangle& obj)
 {
 	if (!animacion) 

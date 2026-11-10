@@ -14,7 +14,16 @@ void Arrow::render()const
 {
     texture->renderFrame(posAndDim.to_sdl(), 0, 0);
 }
-
+bool Arrow::update(float dt) 
+{
+    if (MobileObject::update(dt)) game->reduceNumFlechas();
+    if (game->checkCollision(getPunta())) 
+    {
+        globosExplotados++;
+        game->aumentaPuntuacion(GetCombo());
+    }
+    return MobileObject::update(dt);
+}
 Rectangle Arrow::getPunta()const
 {
     Point2D<> topLeft = Point2D<>(posAndDim.getTopLeftCorner().getX() + (3 * posAndDim.getWidth() / 4), posAndDim.getTopLeftCorner().getY());
@@ -23,7 +32,4 @@ Rectangle Arrow::getPunta()const
 int Arrow::GetCombo()const 
 {
     return (globosExplotados - 1) * 5;
-}
-void Arrow::SumaCombo() {
-    globosExplotados++;
 }

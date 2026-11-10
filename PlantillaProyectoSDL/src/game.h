@@ -68,7 +68,10 @@ public:
 	bool derrota() const;
 	// Devuelve si has pasado de nivel
 	bool nivelCompletado() const;
-
+	// Aumenta la puntuacion la cantidad de balpoints
+	void aumentaPuntuacion(int);
+	void reduceNumGlobos();
+	void reduceNumFlechas();
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -78,8 +81,6 @@ private:
 	void leeArchivoNivel(int);
 	// Genera un globo si ha pasado el tiempo suficiente desde el anterior
 	void BalloonGeneration();
-	// Aumenta la puntuacion la cantidad de balpoints
-	void aumentaPuntuacion(int);
 	// Devuelve true cuando te has quedado sin flechas y no has alcanzado la meta de puntos
 	void compruebaDerrota();
 	// Comprueba si has completado un nivel y pasa al siguiente nivel 
@@ -127,7 +128,6 @@ private:
 
 	//Numero de globos que se han generado
 	int numGlobosGenerados = 0;
-
 	int numFlechasActivas = 0;
 
 	// Indica si has perdido

@@ -8,7 +8,8 @@ public:
 	Arrow(Rectangle, Vector2D<>, Texture*, Game*);
 	
 	void render() const override;
+	// Devuelve true si se sale de la pantalla
+	bool update(float dt) override;
 	Rectangle getPunta() const;
 	int GetCombo() const;
-	void SumaCombo();
 };

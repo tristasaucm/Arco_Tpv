@@ -12,8 +12,10 @@ private:
 	int frame = 0;
 	void avanzaFrame();
 public:
-	Balloon(Rectangle, Vector2D<>, int, Texture*);
+	Balloon(Rectangle, Vector2D<>, int, Texture*, Game*);
 
 	void render() const override;
+	// Devuelve true si se sale de la pantalla
+	bool update(float dt) override;
 	bool hit(const Rectangle&) override;
 };
