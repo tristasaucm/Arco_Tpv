@@ -18,7 +18,7 @@ mt19937 gen(rd());
 // Aqui se encuentran los valores entre los que se varia para el random de los globos
 uniform_int_distribution<int> colorRd(0, 6);
 uniform_int_distribution<int> PosRd(200, 700);
-uniform_real_distribution<float> velRd(-2, -1);
+uniform_real_distribution<float> velRd(-4, -2);
 
 
 using uint = unsigned int; // alias para el tipo unsigned int
@@ -86,7 +86,7 @@ void Game::leeArchivoNivel(int level)
 		int col = colorRd(gen);
 		float pos = (float)PosRd(gen);
 
-		Rectangle posDim = Rectangle(Point2D<>(pos, 700.0f), 65.0f, 75.0f);
+		Rectangle posDim = Rectangle(Point2D<>(pos, 700.0f), 65.0f, 70.0f);
 		Vector2D<> speed = Point2D<>(0.0f, velRd(gen));
 		Balloon* bal = new Balloon(posDim, speed, col, textures[BALLOON]);
 
@@ -166,11 +166,11 @@ void Game::disparaFlecha()
 	float arrowY = bow->getYPos() - 6.0f;
 
 	// Multiplicador de velocidad
-	float hSpeedM = 1.0f + (SDL_GetTicks() - bow->getChargeTime()) / 1000;
-	if (hSpeedM > 3.0f) hSpeedM = 3.0f;
+	float hSpeedM = bow->getArrowSpeedM();
 
-	Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(1 * hSpeedM, 0.0f), textures[ARROW], this);
+	Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(2 * hSpeedM, 0.0f), textures[ARROW], this);
 	objetos.push_back(newArrow);
+	numFlechasActivas++;
 }
 void Game::render() const
 {
@@ -187,19 +187,24 @@ void Game::render() const
 	Hud->render();
 	SDL_RenderPresent(renderer);
 }
-void Game::update()
+void Game::update(float dt)
 {
-	bow->update();
+	bow->update(dt);
 	//TODO: Actualizar la lista
 	for (auto it = objetos.begin(); it != objetos.end();)
 	{
-		if ((*it)->update())
+		if ((*it)->update(dt))
 		{
 			// Si es un globo
 			if (dynamic_cast<Balloon*>(*it))
 			{
 				// Indicamos que se ha reducido el numero de globos para que se genere otro
 				numGlobosGenerados--;
+			}
+			// Si es una flecha
+			else 
+			{
+				numFlechasActivas--;
 			}
 			delete* it;
 			it = objetos.erase(it);
@@ -209,6 +214,7 @@ void Game::update()
 			++it;
 		}
 	}
+	Hud->update(dt);
 	// Genera globos con intervalo de tiempo
 	BalloonGeneration();
 
@@ -223,7 +229,7 @@ Game::run()
 		// delta = Tiempo de ahora - Tiempo frame anterior
 		delta = (int)SDL_GetTicks() - delta;
 		handleEvents();
-		update();
+		update(delta);
 		render();
 		compruebaDerrota();
 		compruebaPasoNivel();
@@ -286,12 +292,12 @@ void Game::aumentaPuntuacion()
 void Game::compruebaDerrota() 
 {
 	// TODO
-	/*
-	if (bow->getNArrows() == 0 && !bow->isCharged() && arrows.size() == 0 && ((points < goal && goal > 0) || goal < 0))
+	
+	if (bow->getNArrows() == 0 && !bow->isCharged() && numFlechasActivas == 0 && ((points < goal && goal > 0) || goal < 0))
 	{
 		pierde = true;
 	}
-	*/
+	
 }
 
 void Game::compruebaPasoNivel()

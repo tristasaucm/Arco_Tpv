@@ -2,7 +2,7 @@
 #include "game.h"
 using namespace std;
 
-bool MobileObject::update() 
+bool MobileObject::update(float dt) 
 {
 	posAndDim.move(speed);
 	// Si se sale de la pantalla

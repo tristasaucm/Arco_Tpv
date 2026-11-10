@@ -58,8 +58,8 @@ void InfoBar::RenderNumFlechas(float posX)const
 void InfoBar::RenderPointsAndLevel(float xpos)const
 {
 	// --- Indicador del nivel
-	lettersTexture->renderFrame(SDL_FRect(10.0f, 10, 50.0f, 30.0f), 0, 0);
-	RenderEnteros(game->getLevel(), 80);
+	lettersTexture->renderFrame(SDL_FRect(10.0f, 10, 40.0f, 30.0f), 0, frameLetras);
+	RenderEnteros(game->getLevel(), 70);
 	
 	// --- Globo indicador de puntos explotando
 	
@@ -70,7 +70,7 @@ void InfoBar::RenderPointsAndLevel(float xpos)const
 	// Calculamos la posicion del globo explotando
 	float x = xpos - (cantidadCifras * 29.0f) / 2 - 50.0f;
 
-	balloon->renderFrame(SDL_FRect(x, 0, 50.0f, 60.0f), 1, frameLetras);
+	balloon->renderFrame(SDL_FRect(x, 5, 50.0f, 50.0f), 1, frameLetras);
 
 	// --- Puntos
 	RenderEnteros(game->getPoints(), xpos);
@@ -130,11 +130,15 @@ void InfoBar::render() const
 	if (game->nivelCompletado()) RenderPasoNivel();
 }
 
-bool InfoBar::update() 
+bool InfoBar::update(float dt) 
 {
 	// Actualizamos el frame de la animacion del globo indicador de puntos explotando
-	frameLetras++;
+	if (SDL_GetTicks() > frameAnterior + 150)
+	{
+		frameAnterior = (float) SDL_GetTicks();
+		frameLetras++;
+	}
 	// Volver al primer frame de la animación
-	if (frameLetras > balloon->getNumColumns()) frameLetras = 0;
+	if (frameLetras > lettersTexture->getNumColumns() - 1) frameLetras = 0;
 	return false;
 }

@@ -16,8 +16,7 @@ public:
 	~Bow();
 	void handleEvent(const SDL_Event& event);
 	void render() const override;
-	bool update() override;
-	bool hit(const Rectangle&) override;
+	bool update(float dt) override;
 
 	// Devuelve el numero de flechas restantes
 	int getNArrows() const;
@@ -27,6 +26,7 @@ public:
 	void setNumArrows(int);
 	// Devuelve si el arco esta cargado o no
 	bool isCharged() const;
-	float getChargeTime() const;
+	// Devuelve el multiplicador de velocidad de la flecha
+	float getArrowSpeedM() const;
 };
 

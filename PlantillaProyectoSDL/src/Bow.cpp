@@ -15,11 +15,23 @@ void Bow::render() const
     // Frame arco no cargado
     int frame = 1;
     // Frame arco cargados
-    if (charged) frame = 0;
+    if (charged) 
+    {
+        frame = 0;
+        SDL_FRect indicador{
+            indicador.x = posAndDim.getTopLeftCorner().getX() + posAndDim.getWidth(),
+            indicador.y = posAndDim.getTopLeftCorner().getY() + posAndDim.getHeight()/2 - 5,
+            indicador.w = 20,
+            indicador.h = 20
+        };
+        if (getArrowSpeedM() >= 3) game->getTexture(game->BALLOON)->renderFrame(indicador, 1, 0);
+        else if (getArrowSpeedM() >= 2) game->getTexture(game->BALLOON)->renderFrame(indicador, 2, 0);
+        else game->getTexture(game->BALLOON)->renderFrame(indicador, 3, 0);
+    }
     // Render
     texture->renderFrame(posAndDim.to_sdl(), 0, frame);
 }
-bool Bow::update() 
+bool Bow::update(float dt) 
 {
     // MOVIMIENTO
     posAndDim.move(moveDir); 
@@ -46,10 +58,7 @@ bool Bow::update()
     }
     return false;
 }
-bool Bow::hit(const Rectangle& obj) 
-{
-    return false;
-}
+
 void Bow::handleEvent(const SDL_Event& event) 
 {
     if (event.type == SDL_EVENT_MOUSE_MOTION)
@@ -57,8 +66,8 @@ void Bow::handleEvent(const SDL_Event& event)
         mouseMoved = true;
         SDL_GetMouseState(nullptr, &mouseY);
         float bowCentre = getYPos();
-        if (bowCentre < mouseY) moveDir = Vector2D<>(0, 2);
-        else if (bowCentre > mouseY) moveDir = Vector2D<>(0, -2);
+        if (bowCentre < mouseY) moveDir = Vector2D<>(0, 3);
+        else if (bowCentre > mouseY) moveDir = Vector2D<>(0, -3);
     }
 
     if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
@@ -67,12 +76,12 @@ void Bow::handleEvent(const SDL_Event& event)
         mouseMoved = false;
         if (event.key.key == SDLK_UP && posAndDim.getTopLeftCorner().getY() > 0.0f)
         {
-            moveDir = Vector2D<>(0, -2);
+            moveDir = Vector2D<>(0, -3);
 
         }
         else if (event.key.key == SDLK_DOWN && posAndDim.getTopLeftCorner().getY() < 500.0f)
         {
-            moveDir = Vector2D<>(0, 2);
+            moveDir = Vector2D<>(0, 3);
 
         }
         else if (event.key.key == SDLK_LEFT || event.button.button == SDL_BUTTON_LEFT)
@@ -123,7 +132,12 @@ bool Bow::isCharged() const
     return charged;
 }
 
-float Bow::getChargeTime() const
+float Bow::getArrowSpeedM() const
 {
-    return cargaArco;
+    float ASpeedM = 1.0f + (SDL_GetTicks() - cargaArco) / 1000;
+    if (ASpeedM > 3.0f)
+    {
+        ASpeedM = 3.0f;
+    }
+    return ASpeedM;
 }

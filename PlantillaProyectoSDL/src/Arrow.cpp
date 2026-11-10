@@ -20,9 +20,5 @@ void Arrow::render() const
     */
     texture->renderFrame(posAndDim.to_sdl(), 0, 0);
 }
-bool Arrow::hit(const Rectangle& obj) 
-{
-    return false;
-}
 
 

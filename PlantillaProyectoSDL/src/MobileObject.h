@@ -7,5 +7,5 @@ protected:
 	
 public:
 	// Devuelve true si se sale de la pantalla
-	bool update() override;
+	bool update(float dt) override;
 };

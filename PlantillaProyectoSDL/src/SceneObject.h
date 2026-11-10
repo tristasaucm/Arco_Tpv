@@ -9,6 +9,6 @@ protected:
 	Texture* texture;
 
 public:
-	virtual bool hit(const Rectangle&) = 0;
+	virtual bool hit(const Rectangle&);
 
 };

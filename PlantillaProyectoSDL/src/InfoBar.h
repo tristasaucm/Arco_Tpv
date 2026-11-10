@@ -13,6 +13,7 @@ private:
 	Texture* balloon;
 	// Frame a renderizar de las letras
 	int frameLetras = 0;
+	float frameAnterior = 0;
 public:
 	InfoBar(Game*, Bow*);
 	~InfoBar();
@@ -23,5 +24,5 @@ public:
 	void RenderPasoNivel() const;
 
 	void render() const override;
-	bool update() override;
+	bool update(float dt) override;
 };

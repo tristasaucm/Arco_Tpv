@@ -68,7 +68,7 @@ private:
 
 	// --- Update
 
-	void update();
+	void update(float dt);
 
 	// --- Handle events
 
@@ -105,6 +105,8 @@ private:
 
 	//Numero de globos que se han generado
 	int numGlobosGenerados = 0;
+
+	int numFlechasActivas = 0;
 
 	// Indica si has perdido
 	bool pierde = false;
