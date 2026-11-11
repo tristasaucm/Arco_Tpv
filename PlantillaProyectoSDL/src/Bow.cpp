@@ -69,54 +69,32 @@ void Bow::handleEvent(const SDL_Event& event)
         if (bowCentre < mouseY) moveDir = Vector2D<>(0, 3);
         else if (bowCentre > mouseY) moveDir = Vector2D<>(0, -3);
     }
-
-    if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+    else if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
     {
         // Anulamos el movimiento por el raton
         mouseMoved = false;
-        if (event.key.key == SDLK_UP && posAndDim.getTopLeftCorner().getY() > 0.0f)
-        {
-            moveDir = Vector2D<>(0, -3);
+        if (event.key.key == SDLK_UP && posAndDim.getTopLeftCorner().getY() > 0.0f) moveDir = Vector2D<>(0, -3);
 
+        else if (event.key.key == SDLK_DOWN && posAndDim.getTopLeftCorner().getY() < 500.0f) moveDir = Vector2D<>(0, 3);
+
+        else if (event.key.key == SDLK_LEFT || event.button.button == SDL_BUTTON_LEFT && !charged && numArrows > 0)
+        {
+            cargaArco = (float)SDL_GetTicks();
+            charged = true;
+            numArrows--;
         }
-        else if (event.key.key == SDLK_DOWN && posAndDim.getTopLeftCorner().getY() < 500.0f)
+        else if (event.key.key == SDLK_RIGHT || event.button.button == SDL_BUTTON_RIGHT && charged)
         {
-            moveDir = Vector2D<>(0, 3);
-
-        }
-        else if (event.key.key == SDLK_LEFT || event.button.button == SDL_BUTTON_LEFT)
-        {
-            if (!charged && numArrows > 0)
-            {
-                cargaArco = (float)SDL_GetTicks();
-                charged = true;
-                numArrows--;
-            }
-        }
-        else if (event.key.key == SDLK_RIGHT || event.button.button == SDL_BUTTON_RIGHT)
-        {
-            if (charged)
-            {
-                charged = false;
-                // Creamos una flecha, la disparamos y la metemos en el vector de flechas
-                float arrowY = getYPos() - 6.0f;
-
-                // Multiplicador de velocidad
-                float hSpeedM = getArrowSpeedM();
-
-                Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(2 * hSpeedM, 0.0f), game->getTexture(game->ARROW), this->game);
-                game->GuardaFlechaEnLista(newArrow);
-            }
+            charged = false;
+            // Crear flecha
+            float posArrowY = getYPos() - 6.0f; // Posicion de la flecha en el eje y
+            float hSpeedM = getArrowSpeedM();   // Multiplicador de velocidad
+            Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, posArrowY), 70, 21), Vector2D<>(2 * hSpeedM, 0.0f), game->getTexture(game->ARROW), this->game);
+            // Meter flecha en la lista de objetos
+            game->GuardaFlechaEnLista(newArrow);
         }
     }
-
-    else if (event.type == SDL_EVENT_KEY_UP)
-    {
-        if (event.key.key == SDLK_UP || event.key.key == SDLK_DOWN)
-        {
-            moveDir = Vector2D<>(0, 0);
-        }
-    }
+    else if (event.type == SDL_EVENT_KEY_UP && (event.key.key == SDLK_UP || event.key.key == SDLK_DOWN)) moveDir = Vector2D<>(0, 0);
 }
 
 float Bow::getYPos() const 
