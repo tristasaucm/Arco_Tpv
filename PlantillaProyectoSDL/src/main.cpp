@@ -6,7 +6,6 @@
 //
 
 #include "game.h"
-#include "Bow.h"
 int main(int argc, char* argv[])
 {
     Game().run();

@@ -2,6 +2,7 @@
 #define VECTOR2D_H
 
 #include <iostream>
+#include <cmath>
 /**
  * Vector bidimensional genérico.
  */
@@ -42,8 +43,9 @@ public:
 	}
 
 	//Longitud del vector
-	T length() const{
-	 }
+	T length() const {
+		return std::sqrt(x*x + y*y);
+	}
 };
 
 // TODO: definir alias Point2D<T>

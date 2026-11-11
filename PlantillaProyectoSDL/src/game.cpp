@@ -164,17 +164,8 @@ Game::~Game()
 	}
 	
 }
-void Game::disparaFlecha() 
+void Game::GuardaFlechaEnLista(Arrow* newArrow) 
 {
-	// TODO:Meter Flecha a la lista
-	
-	// Creamos una flecha, la disparamos y la metemos en el vector de flechas
-	float arrowY = bow->getYPos() - 6.0f;
-
-	// Multiplicador de velocidad
-	float hSpeedM = bow->getArrowSpeedM();
-
-	Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(2 * hSpeedM, 0.0f), textures[ARROW], this);
 	objetos.push_back(newArrow);
 	numFlechasActivas++;
 }
@@ -221,7 +212,7 @@ Game::run()
 	{
 
 		// delta = Tiempo de ahora - Tiempo frame anterior
-		delta = (int)SDL_GetTicks() - delta;
+		delta = (float)SDL_GetTicks() - delta;
 		handleEvents();
 		update(delta);
 		render();
@@ -230,7 +221,7 @@ Game::run()
 		// Esperar = Tiempo que debe pasar - Tiempo que ha pasado
 		SDL_Delay(FRAME_PERIOD - delta);
 		// delta = tiempo de ahora
-		delta = (int)SDL_GetTicks();
+		delta = (float)SDL_GetTicks();
 	}
 }
 

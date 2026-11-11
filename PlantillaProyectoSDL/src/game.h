@@ -56,7 +56,7 @@ public:
 	void run();
 
 	// Crea una flecha y la mete al vector de flechas
-	void disparaFlecha();
+	void GuardaFlechaEnLista(Arrow*);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	bool checkCollision(const Rectangle& rect);
 
@@ -105,11 +105,11 @@ private:
 	GameObject* Hud;
 	// --- Variables de tiempo y frames
 	// Tiempo entre frames del update
-	int delta;
+	float delta;
 	// Momento en el que se ha creado el globo anterior
 	int creacionGlobo = 0;
 	// Momento en el que se ha pasado de nivel
-	int tiempoPasoNivel = 0;
+	float tiempoPasoNivel = 0;
 
 	// --- Configuración del nivels
 	// Puntuación del nivel (Se reinicia al cambiar de nivel)

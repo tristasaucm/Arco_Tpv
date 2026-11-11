@@ -98,7 +98,14 @@ void Bow::handleEvent(const SDL_Event& event)
             if (charged)
             {
                 charged = false;
-                game->disparaFlecha();
+                // Creamos una flecha, la disparamos y la metemos en el vector de flechas
+                float arrowY = getYPos() - 6.0f;
+
+                // Multiplicador de velocidad
+                float hSpeedM = getArrowSpeedM();
+
+                Arrow* newArrow = new Arrow(Rectangle(Point2D<>(0.0f, arrowY), 70, 21), Vector2D<>(2 * hSpeedM, 0.0f), game->getTexture(game->ARROW), this->game);
+                game->GuardaFlechaEnLista(newArrow);
             }
         }
     }
