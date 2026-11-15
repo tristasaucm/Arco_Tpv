@@ -137,7 +137,8 @@ Game::Game()
 	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	
 	
-	bow = new Bow(Rectangle(Point2D<>(0.0f, 250.0f), 70, 100), 10, textures[BOW],this);//Creamos el arco
+	bow = new Bow(Rectangle(Point2D<>(0.0f, 250.0f), 70, 100), 10, textures[BOW],this); // Creamos el arco y nos guardamso una referencia
+	objetos.push_back(bow); // Metemos el arco en el array de objetos
 	//Establecemos el primer nivel que vamos a elegir y lo cargamos
 	level = 1;
 	leeArchivoNivel(level);
@@ -153,7 +154,6 @@ Game::~Game()
 	
 	//TODO:Liberar la lista
 	
-	delete bow;// Borramos el arco
 	delete Hud; // Borramos el HUD
 	for (SceneObject* obj : objetos) {
 		delete obj;
@@ -175,7 +175,6 @@ void Game::render() const
 
 	SDL_SetRenderDrawColor(renderer, bg_r, bg_g, bg_b, 255);
 
-	bow->render();
 	//TODO: Render de toda la lista
 	for (auto it = objetos.begin(); it != objetos.end(); ++it) 
 	{
@@ -186,7 +185,6 @@ void Game::render() const
 }
 void Game::update(float dt)
 {
-	bow->update(dt);
 	//TODO: Actualizar la lista
 	for (auto it = objetos.begin(); it != objetos.end();)
 	{
