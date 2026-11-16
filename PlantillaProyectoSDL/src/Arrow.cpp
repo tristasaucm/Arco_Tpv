@@ -18,6 +18,7 @@ bool Arrow::update(float dt)
 {
     bool ret = MobileObject::update(dt);
     if (ret) game->reduceNumFlechas();
+    //Falta aqui saber con que hemos collisionado 
     if (game->checkCollision(getPunta())) 
     {
         globosExplotados++;

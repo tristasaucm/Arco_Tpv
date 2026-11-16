@@ -17,6 +17,7 @@
 #include "Arrow.h"
 #include "Bow.h"
 #include "InfoBar.h"
+#include "Butterfly.h"
 
 // Declaraciones anticipadas
 class Texture;
@@ -70,6 +71,7 @@ public:
 	bool nivelCompletado() const;
 	// Aumenta la puntuacion la cantidad de balpoints
 	void aumentaPuntuacion(int);
+	void reducePuntuacion(int);
 	void reduceNumGlobos();
 	void reduceNumFlechas();
 private:
@@ -85,7 +87,8 @@ private:
 	void compruebaDerrota();
 	// Comprueba si has completado un nivel y pasa al siguiente nivel 
 	void compruebaPasoNivel();
-
+	//Genera las maripoasas del nivel
+	void ButterflyCreation();
 	// Render
 	void render() const;
 

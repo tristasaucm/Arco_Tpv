@@ -2,9 +2,10 @@
 #include "game.h"
 using namespace std;
 
-random_device rd;
-mt19937 gen(rd());
+random_device rd1;
+mt19937 gen1(rd1());
 uniform_real_distribution<float> velRdB(2,4);
+uniform_real_distribution<float> velRdS(-4,4);
 
 Butterfly::Butterfly(Rectangle posAndDim, Vector2D<> speed, Texture* texture, Game* game) 
 {
@@ -23,16 +24,24 @@ bool Butterfly::update(float dt){
 	//Cambiamos la velocidad si se sale de la pantalla
 	if (saleDrch)
 	{
-		speed = Point2D<>(velRdB(gen), 0.0f);
+		speed = Point2D<>(-velRdB(gen1), velRdS(gen1));
 	}if (saleIzq) {
-		speed = Point2D<>(-velRdB(gen), 0.0f);
+		speed = Point2D<>(velRdB(gen1), velRdS(gen1));
 	}
 	if (saleArriba) {
-		speed = Point2D<>(0.0f,velRdB(gen));
+		speed = Point2D<>(velRdS(gen1), velRdB(gen1));
 	}if (saleAbajo) {
-		speed = Point2D<>(0.0f, -velRdB(gen));
+		speed = Point2D<>(velRdS(gen1), -velRdB(gen1));
 	}
+	
 	posAndDim.move(speed);
 	return false;
 
+}
+void Butterfly::render() const {
+	//Falta añadir la animacion
+	texture->renderFrame(posAndDim.to_sdl(), 0, 0);
+}
+bool Butterfly::hit(const Rectangle& obj) {
+	return posAndDim.hasIntersection(obj);
 }

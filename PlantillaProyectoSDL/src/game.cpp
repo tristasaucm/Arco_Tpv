@@ -102,6 +102,14 @@ void Game::leeArchivoNivel(int level)
 		numGlobosGenerados++;
 	}
  }
+ void Game::ButterflyCreation() {
+	 for (int i = 0; i < butterflies; i++) {
+		 Rectangle posDim = Rectangle(Point2D<>(200.0f, 300.0f), 65.0f, 70.0f);
+		 Vector2D<> speed = Point2D<>(2.0f, -3.0f);
+		 Butterfly* butterfly = new Butterfly(posDim, speed, textures[BUTTERFLY], this);
+		 objetos.push_back(butterfly);
+	 }
+ }
 Game::Game()
 {
 	exit = false;
@@ -143,7 +151,7 @@ Game::Game()
 	level = 1;
 	leeArchivoNivel(level);
 	delta = (int)SDL_GetTicks();
-
+	ButterflyCreation();
 	Hud = new InfoBar(this, bow);
 }
 
@@ -281,6 +289,9 @@ void Game::reduceNumFlechas()
 void Game::aumentaPuntuacion(int combo) 
 {
 	points += balpoints +combo;
+}
+void Game::reducePuntuacion(int cant) {
+	points -= cant;
 }
 
 void Game::compruebaDerrota() 
