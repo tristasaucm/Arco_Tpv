@@ -104,7 +104,7 @@ void Game::leeArchivoNivel(int level)
  }
  void Game::ButterflyCreation() {
 	 for (int i = 0; i < butterflies; i++) {
-		 Rectangle posDim = Rectangle(Point2D<>(200.0f, 300.0f), 65.0f, 70.0f);
+		 Rectangle posDim = Rectangle(Point2D<>(760.0f, 300.0f), 50, 50);
 		 Vector2D<> speed = Point2D<>(2.0f, -3.0f);
 		 Butterfly* butterfly = new Butterfly(posDim, speed, textures[BUTTERFLY], this);
 		 objetos.push_back(butterfly);
@@ -266,10 +266,19 @@ bool Game::checkCollision(const Rectangle& rect)
 	{
 		if ((*obj)->hit(rect)) 
 		{
-			numGlobosGenerados--;
 			delete* obj;
 			obj = objetos.erase(obj);
-			return true;
+
+			if (dynamic_cast<Balloon*>(*obj)) 
+			{
+				numGlobosGenerados--;
+				return true;
+			}
+			else 
+			{
+				reducePuntuacion(10);
+				return false;
+			}
 		}
 		else 
 		{
@@ -292,6 +301,7 @@ void Game::aumentaPuntuacion(int combo)
 }
 void Game::reducePuntuacion(int cant) {
 	points -= cant;
+	if (points < 0) points = 0;
 }
 
 void Game::compruebaDerrota() 
